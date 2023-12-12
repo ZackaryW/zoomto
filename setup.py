@@ -26,5 +26,10 @@ setup(
     ],
     classifiers=[
         "Programming Language :: Python :: 3.11",
-    ]
+    ],
+    entry_points={
+        "console_scripts": [
+            "zoomto=zoomto.tools.shell:runshell",
+        ]
+    }
 )
