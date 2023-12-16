@@ -2,3 +2,5 @@ tool.ruff.line-length = 120
 
 [tool.ruff.extend-per-file-ignores]
 "shell.py" = ["E402"]
+"**/__init__.py" = ["F401"]
+"utils.py" = ["F401"]

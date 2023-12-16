@@ -1,5 +1,4 @@
 import os
 
-DIR_PATH = os.path.dirname(os.path.realpath(__file__))
-
-IMAGE_DIR = os.path.join(DIR_PATH, "img")
+INTERNAL_DIR = os.path.dirname(__file__)
+IMAGE_DIR = os.path.join(INTERNAL_DIR, "img")

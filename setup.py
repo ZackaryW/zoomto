@@ -23,6 +23,7 @@ setup(
         "screeninfo",
         "pywin32",
         "easyocr",
+        "zrcl3"
     ],
     classifiers=[
         "Programming Language :: Python :: 3.11",

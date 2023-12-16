@@ -1,42 +1,73 @@
 import os
+from zoomto.utils import OnChangeSaveDict
 import typing
 from typing_extensions import TypedDict
-from zoomto._internal import DIR_PATH
 import pygetwindow as gw
-from zoomto._internal.onChangeDict import OnChangeSaveDict
-from zoomto.utils.misc import load_json
 
 class Coord(TypedDict):
     winX : int
     winY : int
     x : float
     y : float
-
-_match_coords : typing.Dict[str, Coord] = OnChangeSaveDict(
-    os.path.join(DIR_PATH, "match_coords.json"),
-    load_json(os.path.join(DIR_PATH, "match_builtin.json"))
+    weight : int
+    
+_records : dict = OnChangeSaveDict(
+    os.path.join(os.getcwd(), "records.json")
 )
 
-def get_matched_coord(key: str, win : gw.Window):
-    global _match_coords
-    if key not in _match_coords:
-        return None
-
-    coord = _match_coords[key]
-
-    # resize size of window to match
-    if coord["winX"] != win.width or coord["winY"] != win.height:
-        win.resizeTo(coord["winX"], coord["winY"])
-
-    x = win.left + coord["x"]
-    y = win.top + coord["y"]
+def get_record(title : str, wnd : gw.Window, expectedOutcome : typing.Callable = None) -> typing.List[Coord]:
+    if title not in _records:
+        return
+    
+    # filter matching width and height
+    availMatches = [coord for coord in _records[title] if coord["winX"] == wnd.width and coord["winY"] == wnd.height]
+    
+    target = None
+    if len(availMatches) == 0:
+        for match in _records[title]:
+            try:
+                wnd.resizeTo(match["winX"], match["winY"])
+            except Exception:
+                continue
+            
+            if expectedOutcome and not expectedOutcome():
+                continue
+            
+            target = match
+    else:
+        # sort them by weight
+        availMatches.sort(key=lambda coord : coord["weight"], reverse=True)
+        target = availMatches[0]
+        
+    x = wnd.left + target["x"]
+    y = wnd.top + target["y"]
+    
     return (x, y)
 
-def set_coord(key: str, coord: Coord):
-    _match_coords[key] = coord
-
-__all__ = [
-    "Coord",
-    "get_matched_coord",
-    "set_coord",
-]
+def set_record(title : str, coords : typing.List[Coord]):
+    _records[title] = coords
+    
+def set_one_record(
+    title : str, 
+    x : float,
+    y : float, 
+    wnd : gw.Window,
+    parse_rel : bool = True
+):
+    if parse_rel:
+        x = float(x - wnd.left)
+        y = float(y - wnd.top)
+    
+    cobj = Coord(
+        winX = wnd.width,
+        winY = wnd.height,
+        x = x,
+        y = y,
+        weight = 1
+    )
+    
+    if "title" not in _records:
+        _records[title] = [cobj]
+    else:
+        _records[title] = [cobj] + _records[title]
+        
