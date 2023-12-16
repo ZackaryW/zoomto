@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-
+from zrcl3.singleton import SingletonMeta
 
 @dataclass
-class ZoomConfig:
+class _ZoomConfig(metaclass=SingletonMeta):
     debug_image :       bool = False
     debug_screeninfo :  bool = False
     debug_log :         bool = False
@@ -17,4 +17,8 @@ class ZoomConfig:
             if k.startswith("debug_"):
                 self.__dict__[k] = value
 
-GLOBAL_CONFIG : ZoomConfig = ZoomConfig()
+config = _ZoomConfig()
+
+__all__ = [
+    "config",
+]
