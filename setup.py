@@ -8,7 +8,6 @@ setup(
         "zoomto.core", 
         "zoomto._internal", 
         "zoomto._internal.img",
-        "zoomto.utils",
         "zoomto.tools",
     ],
     # include image files
