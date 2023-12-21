@@ -2,9 +2,8 @@
 zoom automation tools
 
 ## Install
-install via github
 ```
-pip install git+https://github.com/ZackaryW/zoomto.git@production 
+pip install zoomto
 ```
 
 ## Usage

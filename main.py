@@ -1,8 +1,9 @@
-
 from zoomto.core.zoomto import ZoomTo
-from zoomto.core.cfg import config
 
-config.debug_all = True
 
-x = ZoomTo()
-x.share_video("example/demo.mp4", maximize=True)
+z = ZoomTo()
+z.share_video(
+    path="example/demo.mp4",
+    send_to_monitor=4,
+    maximize=True
+)
