@@ -32,7 +32,10 @@ def generate_thumbnails():
         
         if os.path.exists(os.path.join("thumbnails", file + ".jpg")):
             continue
-        create_thumbnail(file, os.path.join("thumbnails", file + ".jpg"))
+        try:
+            create_thumbnail(file, os.path.join("thumbnails", file + ".jpg"))
+        except: # noqa
+            pass
 
 @cache
 def get_videos():
@@ -43,8 +46,7 @@ def get_videos():
                 "id": i,
                 "title": file,
                 # resize
-                "thumbnail": f"local/thumbnails/{ file + ".jpg"}",
-            })
+                "thumbnail": f"local/thumbnails/{ file + ".jpg"}" if os.path.exists(os.path.join("thumbnails", file + ".jpg")) else "default-video-thumbnail.jpg"})
 
     return ret
 
