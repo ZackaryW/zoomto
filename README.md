@@ -1,5 +1,5 @@
 # zoomto
-zoom automation tools
+zoom auto share videos
 
 ## Install
 ```
@@ -7,15 +7,11 @@ pip install zoomto
 ```
 
 ## Usage
-```py
-from zoomto.core.main import ZoomTo
-
-z = ZoomTo()
-z.config.debug_all = True
-
-z.share_video(
-    "D:\\@download\\video (2160p).mp4",
-    send_to_monitor=4,
-    maximize=True
-)
 ```
+zoomto
+```
+will launch flask server
+
+## License
+MIT
+
